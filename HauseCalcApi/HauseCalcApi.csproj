@@ -19,4 +19,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <EditorConfigFiles Remove="C:\dotnet\Vins\gitsets\house-calc-api\HauseCalcApi\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="C:\dotnet\Vins\gitsets\house-calc-api\HauseCalcApi\.editorconfig" />
+  </ItemGroup>
+
 </Project>

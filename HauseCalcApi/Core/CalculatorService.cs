@@ -1,24 +1,24 @@
 ﻿namespace HauseCalcApi.Core
 {
-    public class CalculatorService
+    public class CalculatorService : ICalculatorService
     {
-            private readonly IPriceRepository _priceRepository;
+        private readonly IPriceRepository _priceRepository;
 
-    // Бизнес логика
+        // Бизнес логика
 
-    // Передаем Id услуги
-    const int SETWALLS_ID = 1;
-    const int PROJECT_ID = 2;
-    const int GEOLOGI_ID = 3;
-    const int GEODESY_ID = 4;
-    const int CONSTRUCTION_ID = 5;
-    const int ARMO_ID = 6;
-    const int SEAMS_ID = 7;
-    const int DELIVERY_ID = 8;
-    const int FUNDATION_ID = 9;
-    const int ROOF_ID = 10;
-    const int WINDOWS_ID = 11;
-    const int DOOR_ID = 12;
+        // Передаем Id услуги
+        const int SETWALLS_ID = 1;
+        const int PROJECT_ID = 2;
+        const int GEOLOGI_ID = 3;
+        const int GEODESY_ID = 4;
+        const int CONSTRUCTION_ID = 5;
+        const int ARMO_ID = 6;
+        const int SEAMS_ID = 7;
+        const int DELIVERY_ID = 8;
+        const int FUNDATION_ID = 9;
+        const int ROOF_ID = 10;
+        const int WINDOWS_ID = 11;
+        const int DOOR_ID = 12;
 
     public CalculatorService(IPriceRepository priceRepository)
     {
@@ -116,5 +116,6 @@
         int resultCost = servicePrice;
         return resultCost;
     }
+
     }
 }

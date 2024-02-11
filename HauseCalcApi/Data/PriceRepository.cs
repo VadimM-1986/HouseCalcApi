@@ -1,14 +1,13 @@
 ﻿using HauseCalcApi.Core;
 using Microsoft.EntityFrameworkCore;
-using AppContext = HauseCalcApi.Models.AppContext;
 namespace HauseCalcApi.Data
 {
     public class PriceRepository : IPriceRepository
     {
 
-        private readonly AppContext _context;
+        private readonly Models.AppContext _context;
         
-        public PriceRepository(AppContext context)
+        public PriceRepository(Models.AppContext context)
         {
             _context = context;
         }

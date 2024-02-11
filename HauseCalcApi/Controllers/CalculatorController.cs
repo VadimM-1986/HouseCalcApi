@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using HauseCalcApi.Models;
-using AppContext = HauseCalcApi.Models.AppContext;
+using HauseCalcApi.Core;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HauseCalcApi.Controllers
 {
@@ -14,118 +15,227 @@ namespace HauseCalcApi.Controllers
     [ApiController]
     public class CalculatorController : ControllerBase
     {
-        private readonly AppContext _context;
-
-        public CalculatorController(AppContext context)
+        private readonly ICalculatorService _calculatorService;
+        public CalculatorController(ICalculatorService calculatorService)
         {
-            _context = context;
+            _calculatorService = calculatorService;
         }
 
-        // GET: api/TodoItems
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<PriceDTO>>> GetPrices()
-        {
-            return await _context.Prices
-                .Select(x => PriceToDTO(x))
-                .ToListAsync();
-        }
 
-        // GET: api/Prices/5
-        // <snippet_GetByID>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<PriceDTO>> GetPrice(long id)
+        [HttpGet("walls/{id}/{areaHouseSquarMeters}")]
+        public async Task<ActionResult<int>> GetWallsCost(string id, int areaHouseSquarMeters)
         {
-            var todoItem = await _context.Prices.FindAsync(id);
-
-            if (todoItem == null)
+            if (id == "getwallscost" && areaHouseSquarMeters >= 0)
+            {
+                var resultPriceValue = await _calculatorService.GetWallsCost(areaHouseSquarMeters);
+                return resultPriceValue;
+            }
+            else
             {
                 return NotFound();
             }
-
-            return PriceToDTO(todoItem);
         }
-        // </snippet_GetByID>
 
-        // PUT: api/Prices/5
-        // <snippet_Update>
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutPrice(long id, PriceDTO priceDTO)
+        [HttpGet("projects/{id}/{areaHouseSquarMeters}")]
+        public async Task<ActionResult<int>> GetProjectsCost(string id, int areaHouseSquarMeters)
         {
-            if (id != priceDTO.Id)
+            if (id == "getprojectscost" && areaHouseSquarMeters >= 0)
             {
-                return BadRequest();
+                var resultPriceValue = await _calculatorService.GetProjectsCost(areaHouseSquarMeters);
+                return resultPriceValue;
             }
-
-            var PriceItem = await _context.Prices.FindAsync(id);
-            if (PriceItem == null)
+            else
             {
                 return NotFound();
             }
+        }
 
-            PriceItem.Name = priceDTO.Name;
-            PriceItem.Value = priceDTO.Value;
-
-            try
+        [HttpGet("geology/{id}")]
+        public async Task<ActionResult<int>> GetGeologyCost(string id)
+        {
+            if (id == "getgeologycost")
             {
-                await _context.SaveChangesAsync();
+                var resultPriceValue = await _calculatorService.GetGeologyCost();
+                return resultPriceValue;
             }
-            catch (DbUpdateConcurrencyException) when (!TodoPriceExists(id))
+            else
             {
                 return NotFound();
             }
-
-            return NoContent();
         }
-        // </snippet_Update>
 
-        // POST: api/Prices
-        // <snippet_Create>
-        [HttpPost]
-        public async Task<ActionResult<PriceDTO>> PostPriceItem(PriceDTO todoDTO)
+        [HttpGet("geodesy/{id}")]
+        public async Task<ActionResult<int>> GetGeodesyCost(string id)
         {
-            var priceItem = new Price
+            if (id == "getgeodesycost")
             {
-                Value = todoDTO.Value,
-                Name = todoDTO.Name
-            };
-
-            _context.Prices.Add(priceItem);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(
-                nameof(GetPrices),
-                new { id = priceItem.Id },
-                PriceToDTO(priceItem));
-        }
-        // </snippet_Create>
-
-        // DELETE: api/Prices/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteTodoItem(long id)
-        {
-            var todoItem = await _context.Prices.FindAsync(id);
-            if (todoItem == null)
+                var resultPriceValue = await _calculatorService.GetGeodesyCost();
+                return resultPriceValue;
+            }
+            else
             {
                 return NotFound();
             }
-
-            _context.Prices.Remove(todoItem);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
         }
 
-        private bool TodoPriceExists(long id)
+        [HttpGet("construction/{id}/{areaHouseSquarMeters}")]
+        public async Task<ActionResult<int>> GetConstructionCost(string id, int areaHouseSquarMeters)
         {
-            return _context.Prices.Any(e => e.Id == id);
+            if (id == "getconstructioncost" && areaHouseSquarMeters >= 0)
+            {
+                var resultPriceValue = await _calculatorService.GetConstructionCost(areaHouseSquarMeters);
+                return resultPriceValue;
+            }
+            else
+            {
+                return NotFound();
+            }
         }
 
-        private static PriceDTO PriceToDTO(Price price) =>
-           new PriceDTO
-           {
-               Id = price.Id,
-               Name = price.Name,
-               Value = price.Value
-           };
+        [HttpGet("armo/{id}/{areaHouseSquarMeters}")]
+        public async Task<ActionResult<int>> GetArmoCost(string id, int areaHouseSquarMeters)
+        {
+            if (id == "getarmocost" && areaHouseSquarMeters >= 0)
+            {
+                var resultPriceValue = await _calculatorService.GetArmoCost(areaHouseSquarMeters);
+                return resultPriceValue;
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("seams/{id}/{areaHouseSquarMeters}")]
+        public async Task<ActionResult<int>> GetSeamsCost(string id, int areaHouseSquarMeters)
+        {
+            if (id == "getseamscost" && areaHouseSquarMeters >= 0)
+            {
+                var resultPriceValue = await _calculatorService.GetSeamsCost(areaHouseSquarMeters);
+                return resultPriceValue;
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("delivery/{id}/{distanceKilometer}")]
+        public async Task<ActionResult<int>> GetDeliveryCost(string id, int distanceKilometer)
+        {
+            if (id == "getdeliverycost" && distanceKilometer >= 0)
+            {
+                var resultPriceValue = await _calculatorService.GetDeliveryCost(distanceKilometer);
+                return resultPriceValue;
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("fundation/{id}/{areaHouseSquarMeters}")]
+        public async Task<ActionResult<int>> GetFundationCost(string id, int areaHouseSquarMeters)
+        {
+            if (id == "getfundationcost" && areaHouseSquarMeters >= 0)
+            {
+                var resultPriceValue = await _calculatorService.GetFundationCost(areaHouseSquarMeters);
+                return resultPriceValue;
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("roof/{id}/{areaHouseSquarMeters}")]
+        public async Task<ActionResult<int>> GetRoofCost(string id, int areaHouseSquarMeters)
+        {
+            if (id == "getroofcost" && areaHouseSquarMeters >= 0)
+            {
+                var resultPriceValue = await _calculatorService.GetRoofCost(areaHouseSquarMeters);
+                return resultPriceValue;
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("windows/{id}/{filedWindowArea}")]
+        public async Task<ActionResult<int>> GetWindowsCost(string id, int filedWindowArea)
+        {
+            if (id == "getwindowscost" && filedWindowArea >= 0)
+            {
+                var resultPriceValue = await _calculatorService.GetWindowsCost(filedWindowArea);
+                return resultPriceValue;
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet("door/{id}")]
+        public async Task<ActionResult<int>> GetDoorCost(string id)
+        {
+            if (id == "getdoorcost")
+            {
+                var resultPriceValue = await _calculatorService.GetDoorCost();
+                return resultPriceValue;
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+
+
+
+
+        //[HttpPost]
+        // public async Task<ActionResult<int>> PostGetWallsCost(string id, int areaHouseSquarMeters)
+        // {
+        //     if (id == "getwallscost")
+        //     {
+        //         var resultPriceValue = await _calculatorService.GetWallsCost(areaHouseSquarMeters);
+        //         return resultPriceValue;
+        //     }
+        //     else
+        //     {
+        //         return NotFound();
+        //     }
+        // }
+
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateGetPrice(string id, int transmittedHouseParameters)
+        //{
+        //    if (id == "getwallscost")
+        //    {
+        //        int resultCost = await _calculatorService.GetWallsCost(transmittedHouseParameters);
+        //        return CreatedAtAction(nameof(GetPrice), new { id, resultCost });
+        //    }
+        //    else
+        //    {
+        //        return BadRequest();
+        //    }
+        //}
+
+        //[HttpGet]
+        //public async Task<ActionResult<IEnumerable<PriceDTO>>> GetPrices()
+        //{
+        //    return await _calculatorService.GetProjectsCost();
+        //    return await _context.Prices.Select(x => PriceToDTO(x)).ToListAsync();
+        //}
+
+        //private static PriceDTO PriceDTO(Price price) =>
+        //   new PriceDTO
+        //   {
+        //       Id = price.Id,
+        //       Name = price.Name,
+        //       Value = price.Value
+        //   };
+
     }
 }

@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using HauseCalcApi.Models;
 using AppContext = HauseCalcApi.Models.AppContext;
+using HauseCalcApi.Core;
+using HauseCalcApi.Data;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,14 +13,18 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
 
-builder.Services.AddDbContext<AppContext>(options =>
-{
-    options.UseSqlite("Data Source=helloapp.db"); 
-});
-
+//builder.Services.AddDbContext<AppContext>(options =>
+//{
+//    options.UseSqlite("Data Source=helloapp.db"); 
+//});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddSingleton<AppContext>();
+builder.Services.AddTransient <IPriceRepository, PriceRepository>();
+builder.Services.AddTransient <ICalculatorService, CalculatorService>();
+
 
 var app = builder.Build();
 
