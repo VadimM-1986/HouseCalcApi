@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34330.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HauseCalcApi", "HauseCalcApi\HauseCalcApi.csproj", "{6269D106-4006-4A9F-B13C-88A5A75F2CCF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PolistirolbetonDomCalc.Tests", "..\..\house-calc-mvp\PolistirolbetonDomCalc.Tests\PolistirolbetonDomCalc.Tests.csproj", "{314F7D6D-D798-4A4B-8104-F114F1445DFD}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6269D106-4006-4A9F-B13C-88A5A75F2CCF} = {6269D106-4006-4A9F-B13C-88A5A75F2CCF}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6269D106-4006-4A9F-B13C-88A5A75F2CCF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6269D106-4006-4A9F-B13C-88A5A75F2CCF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6269D106-4006-4A9F-B13C-88A5A75F2CCF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6269D106-4006-4A9F-B13C-88A5A75F2CCF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{314F7D6D-D798-4A4B-8104-F114F1445DFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{314F7D6D-D798-4A4B-8104-F114F1445DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{314F7D6D-D798-4A4B-8104-F114F1445DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{314F7D6D-D798-4A4B-8104-F114F1445DFD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6794E80E-4530-4A04-B1EB-C4C709D8C4C0}
+	EndGlobalSection
+EndGlobal
