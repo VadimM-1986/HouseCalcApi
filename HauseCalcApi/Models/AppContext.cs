@@ -6,6 +6,7 @@ namespace HauseCalcApi.Models
     {
         private readonly string _dataSource;
         public DbSet<Price> Prices { get; set; }
+        public DbSet<SetServiceClient> SetServiceClients { get; set; }
 
         public AppContext(string dataSource = "Data Source=helloapp.db")
         {

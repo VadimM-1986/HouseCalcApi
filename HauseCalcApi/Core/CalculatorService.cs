@@ -1,8 +1,11 @@
-﻿namespace HauseCalcApi.Core
+﻿using HauseCalcApi.Models;
+
+namespace HauseCalcApi.Core
 {
     public class CalculatorService : ICalculatorService
     {
         private readonly IPriceRepository _priceRepository;
+        private readonly SetServiceClient _setService;
 
         // Бизнес логика
 
@@ -20,102 +23,103 @@
         const int WINDOWS_ID = 11;
         const int DOOR_ID = 12;
 
-    public CalculatorService(IPriceRepository priceRepository)
+    public CalculatorService(IPriceRepository priceRepository, SetServiceClient setService)
     {
         _priceRepository = priceRepository;
-    }
-
-    public async Task<int> GetWallsCost(int areaHouseSquarMeters)
-    {
-        int servicePrice = await _priceRepository.GetPriceByIdAsync(SETWALLS_ID);
-        int resultCost = areaHouseSquarMeters * servicePrice;
-        return resultCost;
-    }
-
-    public async Task<int> GetProjectsCost(int areaHouseSquarMeters)
-    {
-        int servicePrice = await _priceRepository.GetPriceByIdAsync(PROJECT_ID);
-        int resultCost = areaHouseSquarMeters * servicePrice;
-        return resultCost;
-    }
-
-    public async Task<int> GetGeologyCost()
-    {
-        int servicePrice = await _priceRepository.GetPriceByIdAsync(GEOLOGI_ID);
-        int resultCost = servicePrice;
-        return resultCost;
-    }
-
-    public async Task<int> GetGeodesyCost()
-    {
-        int servicePrice = await _priceRepository.GetPriceByIdAsync(GEODESY_ID);
-        int resultCost = servicePrice;
-        return resultCost;
-    }
-
-    public async Task<int> GetConstructionCost(int areaHouseSquarMeters)
-    {
-        int servicePrice = await _priceRepository.GetPriceByIdAsync(CONSTRUCTION_ID);
-        int resultCost = areaHouseSquarMeters * servicePrice;
-        return resultCost;
-    }
-
-    public async Task<int> GetArmoCost(int areaHouseSquarMeters)
-    {
-        int servicePrice = await _priceRepository.GetPriceByIdAsync(ARMO_ID);
-        int resultCost = areaHouseSquarMeters * servicePrice;
-        return resultCost;
-    }
-
-    public async Task<int> GetSeamsCost(int areaHouseSquarMeters)
-    {
-        int servicePrice = await _priceRepository.GetPriceByIdAsync(SEAMS_ID);
-        int resultCost = areaHouseSquarMeters * servicePrice;
-        return resultCost;
-    }
-
-    public async Task<int> GetDeliveryCost(int distanceKilometers)
-    { 
-        if (distanceKilometers <= 0)
-        {
-            throw new ArgumentException("Incorrect value of the variable Distance! Should be greater than 0!", nameof (distanceKilometers));
+        _setService = setService;
         }
-        int servicePrice = await _priceRepository.GetPriceByIdAsync(DELIVERY_ID);
-        int resultCost = distanceKilometers * servicePrice;
-        return resultCost;
-    }
 
-    public async Task<int> GetFundationCost(int areaHouseSquarMeters)
-    {
-        int servicePrice = await _priceRepository.GetPriceByIdAsync(FUNDATION_ID);
-        int resultCost = areaHouseSquarMeters * servicePrice;
-        return resultCost;
-    }
-
-    public async Task<int> GetRoofCost(int areaHouseSquarMeters)
-    {
-        int servicePrice = await _priceRepository.GetPriceByIdAsync(ROOF_ID);
-        int resultCost = areaHouseSquarMeters * servicePrice;
-        return resultCost;
-    }
-
-    public async Task<int> GetWindowsCost(int filedWindowArea)
-    {
-        if (filedWindowArea <= 0)
+        public async Task<Guid> SetCalculationClient(SetServiceClientDTO setServiceClients)
         {
-            throw new ArgumentException("Incorrect value of the Window variable! Must be greater than 0!", nameof (filedWindowArea));
+
+            if (setServiceClients.areaHouseSquarMeters <= 0)
+            {
+                throw new ArgumentException("Еhe house area field is not filled in!");
+            }
+            else
+            {
+                _setService.IdGuid = Guid.NewGuid();
+
+                _setService.areaHouseSquarMeters = setServiceClients.areaHouseSquarMeters;
+
+                if (setServiceClients.Walls == true)
+                {
+                    _setService.Walls = setServiceClients.areaHouseSquarMeters * await _priceRepository.GetPriceByIdAsync(SETWALLS_ID);
+                }
+
+                if (setServiceClients.Projects == true)
+                {
+                    _setService.Projects = setServiceClients.areaHouseSquarMeters * await _priceRepository.GetPriceByIdAsync(PROJECT_ID);
+                }
+
+                if (setServiceClients.Geology == true)
+                {
+                    _setService.Geology = await _priceRepository.GetPriceByIdAsync(GEOLOGI_ID);
+                }
+
+                if (setServiceClients.Geodesy == true)
+                {
+                    _setService.Geodesy = await _priceRepository.GetPriceByIdAsync(GEODESY_ID);
+                }
+
+                if (setServiceClients.Construction == true)
+                {
+                    _setService.Construction = setServiceClients.areaHouseSquarMeters * await _priceRepository.GetPriceByIdAsync(CONSTRUCTION_ID);
+                }
+
+                if (setServiceClients.Armo == true)
+                {
+                    _setService.Armo = setServiceClients.areaHouseSquarMeters * await _priceRepository.GetPriceByIdAsync(ARMO_ID);
+                }
+
+                if (setServiceClients.Seams == true)
+                {
+                    _setService.Seams = setServiceClients.areaHouseSquarMeters * await _priceRepository.GetPriceByIdAsync(SEAMS_ID);
+                }
+
+                if (setServiceClients.DeliveryDistanceKilometers >= 0)
+                {
+                    _setService.DeliveryDistanceKilometers = setServiceClients.DeliveryDistanceKilometers * await _priceRepository.GetPriceByIdAsync(DELIVERY_ID);
+                }
+
+                if (setServiceClients.Fundation == true)
+                {
+                    _setService.Fundation = setServiceClients.areaHouseSquarMeters * await _priceRepository.GetPriceByIdAsync(FUNDATION_ID);
+                }
+
+                if (setServiceClients.Roof == true)
+                {
+                    _setService.Roof = setServiceClients.areaHouseSquarMeters * await _priceRepository.GetPriceByIdAsync(ROOF_ID);
+                }
+
+                if (setServiceClients.FiledWindowArea >= 0)
+                {
+                    _setService.FiledWindowArea = setServiceClients.FiledWindowArea * await _priceRepository.GetPriceByIdAsync(WINDOWS_ID);
+                }
+
+                if (setServiceClients.Door == true)
+                {
+                    _setService.Door = await _priceRepository.GetPriceByIdAsync(DOOR_ID);
+                }
+
+                int AllCost = _setService.Walls + _setService.Projects + _setService.Geology + _setService.Construction
+                            + _setService.Armo + _setService.Seams + _setService.DeliveryDistanceKilometers + _setService.Fundation
+                            + _setService.Roof + _setService.FiledWindowArea + _setService.Door;
+
+                _setService.AllCost = AllCost;
+            }
+
+            await _priceRepository.FillDatabaseCalculationCustomerAsync(_setService);
+
+            return _setService.IdGuid;    
         }
-        int servicePrice = await _priceRepository.GetPriceByIdAsync(WINDOWS_ID);
-        int resultCost = servicePrice * filedWindowArea;
-        return resultCost;
-    }
 
-    public async Task<int> GetDoorCost()
-    {
-        int servicePrice = await _priceRepository.GetPriceByIdAsync(DOOR_ID);
-        int resultCost = servicePrice;
-        return resultCost;
-    }
 
+        // Get a calculation
+        public async Task <SetServiceClient> GetCalculationCost (Guid guid)
+        {
+            SetServiceClient setServiceClients = await _priceRepository.GetCalculationCost(guid);
+            return setServiceClients;
+        }
     }
 }
