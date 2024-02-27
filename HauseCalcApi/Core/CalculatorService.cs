@@ -107,6 +107,8 @@ namespace HauseCalcApi.Core
                             + _setService.Roof + _setService.FiledWindowArea + _setService.Door;
 
                 _setService.AllCost = AllCost;
+
+                _setService.DateTime = DateTime.Now;
             }
 
             await _priceRepository.FillDatabaseCalculationCustomerAsync(_setService);

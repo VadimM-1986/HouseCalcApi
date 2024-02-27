@@ -55,7 +55,8 @@ namespace HauseCalcApi.Data
                     Roof = setServiceClient.Roof,
                     FiledWindowArea = setServiceClient.FiledWindowArea,
                     Door = setServiceClient.Door,
-                    AllCost = setServiceClient.AllCost
+                    AllCost = setServiceClient.AllCost,
+                    DateTime = setServiceClient.DateTime
                 },
             };
 

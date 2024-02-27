@@ -18,6 +18,7 @@ namespace HauseCalcApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
 
+    
             modelBuilder.Entity("HauseCalcApi.Models.SetServiceClient", b =>
                 {
                     b.Property<int>("Id")
@@ -32,6 +33,9 @@ namespace HauseCalcApi.Migrations
 
                     b.Property<int>("Construction")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("DeliveryDistanceKilometers")
                         .HasColumnType("INTEGER");

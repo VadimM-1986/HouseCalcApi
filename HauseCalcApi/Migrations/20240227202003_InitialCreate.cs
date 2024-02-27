@@ -6,11 +6,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace HauseCalcApi.Migrations
 {
     /// <inheritdoc />
-    public partial class AddSetServiceClients : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+     
+
             migrationBuilder.CreateTable(
                 name: "SetServiceClients",
                 columns: table => new
@@ -31,7 +33,8 @@ namespace HauseCalcApi.Migrations
                     Roof = table.Column<int>(type: "INTEGER", nullable: false),
                     FiledWindowArea = table.Column<int>(type: "INTEGER", nullable: false),
                     Door = table.Column<int>(type: "INTEGER", nullable: false),
-                    AllCost = table.Column<int>(type: "INTEGER", nullable: false)
+                    AllCost = table.Column<int>(type: "INTEGER", nullable: false),
+                    DateTime = table.Column<DateTime>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -21,5 +21,6 @@ namespace HauseCalcApi.Models
         public int FiledWindowArea { get; set; }
         public int Door { get; set; }
         public int AllCost { get; set; }
+        public DateTime DateTime { get; set; }
     }
 }

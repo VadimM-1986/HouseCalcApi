@@ -12,8 +12,8 @@ using AppContext = HauseCalcApi.Models.AppContext;
 namespace HauseCalcApi.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20240227183748_AddSetServiceClients")]
-    partial class AddSetServiceClients
+    [Migration("20240227202003_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,22 +21,7 @@ namespace HauseCalcApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
 
-            modelBuilder.Entity("HauseCalcApi.Models.Price", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("Name")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("Value")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Prices");
-                });
 
             modelBuilder.Entity("HauseCalcApi.Models.SetServiceClient", b =>
                 {
@@ -52,6 +37,9 @@ namespace HauseCalcApi.Migrations
 
                     b.Property<int>("Construction")
                         .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("DateTime")
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("DeliveryDistanceKilometers")
                         .HasColumnType("INTEGER");
