@@ -18,14 +18,17 @@ namespace HauseCalcApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
 
-    
-            modelBuilder.Entity("HauseCalcApi.Models.SetServiceClient", b =>
+
+            modelBuilder.Entity("HauseCalcApi.Models.UserCalculationRequest", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("AllCost")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("AreaHouseSquarMeters")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Armo")
@@ -68,9 +71,6 @@ namespace HauseCalcApi.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("Walls")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("areaHouseSquarMeters")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");

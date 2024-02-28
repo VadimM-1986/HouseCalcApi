@@ -7,8 +7,8 @@ namespace HauseCalcApi.Core
 {
     public interface ICalculatorService
     {
-        Task<Guid> SetCalculationClient(SetServiceClientDTO costService);
-        Task<SetServiceClient> GetCalculationCost(Guid guid);
+        Task<Guid> UserCalculationRequest(UserCalculationRequestDTO costService);
+        Task<UserCalculationRequest> GetCalculationCost(Guid guid);
     }
 }
 

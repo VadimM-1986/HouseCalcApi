@@ -11,7 +11,7 @@ namespace HauseCalcApi.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-     
+
 
             migrationBuilder.CreateTable(
                 name: "SetServiceClients",
@@ -20,7 +20,7 @@ namespace HauseCalcApi.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     IdGuid = table.Column<Guid>(type: "TEXT", nullable: false),
-                    areaHouseSquarMeters = table.Column<int>(type: "INTEGER", nullable: false),
+                    AreaHouseSquarMeters = table.Column<int>(type: "INTEGER", nullable: false),
                     Walls = table.Column<int>(type: "INTEGER", nullable: false),
                     Projects = table.Column<int>(type: "INTEGER", nullable: false),
                     Geology = table.Column<int>(type: "INTEGER", nullable: false),
@@ -45,6 +45,8 @@ namespace HauseCalcApi.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+
+
             migrationBuilder.DropTable(
                 name: "SetServiceClients");
         }

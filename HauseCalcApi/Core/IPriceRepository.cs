@@ -5,8 +5,8 @@ namespace HauseCalcApi.Core
     public interface IPriceRepository
     {
         Task<int> GetPriceByIdAsync(int id);
-        Task FillDatabaseCalculationCustomerAsync(SetServiceClient setServiceClient);
-        Task<SetServiceClient> GetCalculationCost(Guid guid);
+        Task FillDatabaseCalculationCustomerAsync(UserCalculationRequest setServiceClient);
+        Task<UserCalculationRequest> GetCalculationCost(Guid guid);
     }
 }
 

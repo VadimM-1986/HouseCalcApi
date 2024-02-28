@@ -19,7 +19,6 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<AppContext>();
 builder.Services.AddTransient <IPriceRepository, PriceRepository>();
 builder.Services.AddTransient <ICalculatorService, CalculatorService>();
-builder.Services.AddTransient <SetServiceClient>();
 
 
 var app = builder.Build();

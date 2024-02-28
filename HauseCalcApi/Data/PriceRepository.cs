@@ -34,15 +34,15 @@ namespace HauseCalcApi.Data
 
 
         // Customer Billing Fill Database
-        public async Task FillDatabaseCalculationCustomerAsync(SetServiceClient setServiceClient)
+        public async Task FillDatabaseCalculationCustomerAsync(UserCalculationRequest setServiceClient)
         {
-            var setServiceClients = new List<SetServiceClient>
+            var setServiceClients = new List<UserCalculationRequest>
             {
-                new SetServiceClient
+                new UserCalculationRequest
                 {
                     IdGuid = setServiceClient.IdGuid,
                     Id = setServiceClient.Id,
-                    areaHouseSquarMeters = setServiceClient.areaHouseSquarMeters,
+                    AreaHouseSquarMeters = setServiceClient.AreaHouseSquarMeters,
                     Walls = setServiceClient.Walls,
                     Projects = setServiceClient.Projects,
                     Geology = setServiceClient.Geology,
@@ -66,9 +66,9 @@ namespace HauseCalcApi.Data
 
 
         // Get a calculation
-        public async Task<SetServiceClient> GetCalculationCost(Guid guid)
+        public async Task<UserCalculationRequest> GetCalculationCost(Guid guid)
         {
-            SetServiceClient calculationCost = await _context.SetServiceClients.SingleOrDefaultAsync(el => el.IdGuid ==  guid);
+            UserCalculationRequest calculationCost = await _context.SetServiceClients.SingleOrDefaultAsync(el => el.IdGuid ==  guid);
 
             if (calculationCost == null)
             {

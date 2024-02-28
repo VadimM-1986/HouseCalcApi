@@ -23,17 +23,17 @@ namespace HauseCalcApi.Controllers
 
 
         [HttpPost]
-        public async Task<ActionResult<Guid>> RequestHouseCalculation(SetServiceClientDTO costService)
+        public async Task<ActionResult<Guid>> RequestHouseCalculation(UserCalculationRequestDTO costService)
         {
-            Guid calculationClientId = await _calculatorService.SetCalculationClient(costService);
+            Guid calculationClientId = await _calculatorService.UserCalculationRequest(costService);
             return calculationClientId;
         }
 
 
         [HttpGet("getCalculation/{idGuid}")]
-        public async Task<ActionResult<SetServiceClient>> GetCalculationCost(Guid idGuid)
+        public async Task<ActionResult<UserCalculationRequest>> GetCalculationCost(Guid idGuid)
         {
-            SetServiceClient resultPriceValue = await _calculatorService.GetCalculationCost(idGuid);
+            UserCalculationRequest resultPriceValue = await _calculatorService.GetCalculationCost(idGuid);
             return resultPriceValue;
         }
     }
