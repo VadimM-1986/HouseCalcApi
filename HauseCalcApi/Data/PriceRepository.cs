@@ -40,7 +40,7 @@ namespace HauseCalcApi.Data
             {
                 new UserCalculationRequest
                 {
-                    IdGuid = setServiceClient.IdGuid,
+                    ExternalId = setServiceClient.ExternalId,
                     Id = setServiceClient.Id,
                     AreaHouseSquarMeters = setServiceClient.AreaHouseSquarMeters,
                     Walls = setServiceClient.Walls,
@@ -66,13 +66,13 @@ namespace HauseCalcApi.Data
 
 
         // Get a calculation
-        public async Task<UserCalculationRequest> GetCalculationCost(Guid guid)
+        public async Task<UserCalculationRequest> GetCalculationCost(Guid externalId)
         {
-            UserCalculationRequest calculationCost = await _context.SetServiceClients.SingleOrDefaultAsync(el => el.IdGuid ==  guid);
+            UserCalculationRequest calculationCost = await _context.SetServiceClients.SingleOrDefaultAsync(el => el.ExternalId == externalId);
 
             if (calculationCost == null)
             {
-                throw new InvalidOperationException($"Is not found guid: {guid}");
+                throw new InvalidOperationException($"Is not found guid: {externalId}");
             }
             return calculationCost;
         }

@@ -30,10 +30,10 @@ namespace HauseCalcApi.Controllers
         }
 
 
-        [HttpGet("getCalculation/{idGuid}")]
-        public async Task<ActionResult<UserCalculationRequest>> GetCalculationCost(Guid idGuid)
+        [HttpGet("getCalculation/{externalId}")]
+        public async Task<ActionResult<UserCalculationRequest>> GetCalculationCost(Guid externalId)
         {
-            UserCalculationRequest resultPriceValue = await _calculatorService.GetCalculationCost(idGuid);
+            UserCalculationRequest resultPriceValue = await _calculatorService.GetCalculationCost(externalId);
             return resultPriceValue;
         }
     }

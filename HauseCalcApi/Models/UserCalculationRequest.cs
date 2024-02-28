@@ -6,7 +6,7 @@ namespace HauseCalcApi.Models
     {
         [Key]
         public int Id { get; set; }
-        public Guid IdGuid { get; set; }
+        public Guid ExternalId { get; set; }
         public int AreaHouseSquarMeters { get; set; }
         public int Walls { get; set; }
         public int Projects { get; set; }

@@ -37,7 +37,7 @@ namespace HauseCalcApi.Core
             }
             else
             {
-                _setService.IdGuid = Guid.NewGuid();
+                _setService.ExternalId = Guid.NewGuid();
 
                 _setService.AreaHouseSquarMeters = userCalculationRequest.AreaHouseSquarMeters;
 
@@ -112,7 +112,7 @@ namespace HauseCalcApi.Core
 
             await _priceRepository.FillDatabaseCalculationCustomerAsync(_setService);
 
-            return _setService.IdGuid;    
+            return _setService.ExternalId;    
         }
 
 

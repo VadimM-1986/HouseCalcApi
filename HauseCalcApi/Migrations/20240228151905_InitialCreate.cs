@@ -19,7 +19,7 @@ namespace HauseCalcApi.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    IdGuid = table.Column<Guid>(type: "TEXT", nullable: false),
+                    ExternalId = table.Column<Guid>(type: "TEXT", nullable: false),
                     AreaHouseSquarMeters = table.Column<int>(type: "INTEGER", nullable: false),
                     Walls = table.Column<int>(type: "INTEGER", nullable: false),
                     Projects = table.Column<int>(type: "INTEGER", nullable: false),

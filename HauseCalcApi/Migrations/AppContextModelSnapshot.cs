@@ -58,7 +58,7 @@ namespace HauseCalcApi.Migrations
                     b.Property<int>("Geology")
                         .HasColumnType("INTEGER");
 
-                    b.Property<Guid>("IdGuid")
+                    b.Property<Guid>("ExternalId")
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Projects")
