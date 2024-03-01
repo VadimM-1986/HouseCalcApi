@@ -22,151 +22,19 @@ namespace HauseCalcApi.Controllers
         }
 
 
-        [HttpGet("walls/{areaHouseSquarMeters}")]
-        public async Task<ActionResult<int>> GetWallsCost(int areaHouseSquarMeters)
+        [HttpPost]
+        public async Task<ActionResult<Guid>> RequestHouseCalculation(UserCalculationRequestDTO costService)
         {
-            if (areaHouseSquarMeters >= 0)
-            {
-                var resultPriceValue = await _calculatorService.GetWallsCost(areaHouseSquarMeters);
-                return resultPriceValue;
-            }
-            else
-            {
-                return BadRequest();
-            }
+            Guid calculationClientId = await _calculatorService.UserCalculationRequest(costService);
+            return calculationClientId;
         }
 
-        [HttpGet("projects/{areaHouseSquarMeters}")]
-        public async Task<ActionResult<int>> GetProjectsCost(int areaHouseSquarMeters)
-        {
-            if (areaHouseSquarMeters >= 0)
-            {
-                var resultPriceValue = await _calculatorService.GetProjectsCost(areaHouseSquarMeters);
-                return resultPriceValue;
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
 
-        [HttpGet("geology/")]
-        public async Task<ActionResult<int>> GetGeologyCost()
+        [HttpGet("getCalculation/{externalId}")]
+        public async Task<ActionResult<UserCalculationRequest>> GetCalculationCost(Guid externalId)
         {
-                var resultPriceValue = await _calculatorService.GetGeologyCost();
-                return resultPriceValue;
-        }
-
-        [HttpGet("geodesy/")]
-        public async Task<ActionResult<int>> GetGeodesyCost()
-        {
-                var resultPriceValue = await _calculatorService.GetGeodesyCost();
-                return resultPriceValue;
-        }
-
-        [HttpGet("construction/{areaHouseSquarMeters}")]
-        public async Task<ActionResult<int>> GetConstructionCost(int areaHouseSquarMeters)
-        {
-            if (areaHouseSquarMeters >= 0)
-            {
-                var resultPriceValue = await _calculatorService.GetConstructionCost(areaHouseSquarMeters);
-                return resultPriceValue;
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpGet("armo/{areaHouseSquarMeters}")]
-        public async Task<ActionResult<int>> GetArmoCost(int areaHouseSquarMeters)
-        {
-            if (areaHouseSquarMeters >= 0)
-            {
-                var resultPriceValue = await _calculatorService.GetArmoCost(areaHouseSquarMeters);
-                return resultPriceValue;
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpGet("seams/{areaHouseSquarMeters}")]
-        public async Task<ActionResult<int>> GetSeamsCost(int areaHouseSquarMeters)
-        {
-            if (areaHouseSquarMeters >= 0)
-            {
-                var resultPriceValue = await _calculatorService.GetSeamsCost(areaHouseSquarMeters);
-                return resultPriceValue;
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpGet("delivery/{distanceKilometer}")]
-        public async Task<ActionResult<int>> GetDeliveryCost(int distanceKilometer)
-        {
-            if (distanceKilometer >= 0)
-            {
-                var resultPriceValue = await _calculatorService.GetDeliveryCost(distanceKilometer);
-                return resultPriceValue;
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpGet("fundation/{areaHouseSquarMeters}")]
-        public async Task<ActionResult<int>> GetFundationCost(int areaHouseSquarMeters)
-        {
-            if (areaHouseSquarMeters >= 0)
-            {
-                var resultPriceValue = await _calculatorService.GetFundationCost(areaHouseSquarMeters);
-                return resultPriceValue;
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpGet("roof/{areaHouseSquarMeters}")]
-        public async Task<ActionResult<int>> GetRoofCost(int areaHouseSquarMeters)
-        {
-            if (areaHouseSquarMeters >= 0)
-            {
-                var resultPriceValue = await _calculatorService.GetRoofCost(areaHouseSquarMeters);
-                return resultPriceValue;
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpGet("windows/{filedWindowArea}")]
-        public async Task<ActionResult<int>> GetWindowsCost(int filedWindowArea)
-        {
-            if (filedWindowArea >= 0)
-            {
-                var resultPriceValue = await _calculatorService.GetWindowsCost(filedWindowArea);
-                return resultPriceValue;
-            }
-            else
-            {
-                return BadRequest();
-            }
-        }
-
-        [HttpGet("door/")]
-        public async Task<ActionResult<int>> GetDoorCost()
-        {
-                var resultPriceValue = await _calculatorService.GetDoorCost();
-                return resultPriceValue;
+            UserCalculationRequest resultPriceValue = await _calculatorService.GetCalculationCost(externalId);
+            return resultPriceValue;
         }
     }
 }
