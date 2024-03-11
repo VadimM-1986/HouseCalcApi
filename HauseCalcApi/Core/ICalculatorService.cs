@@ -1,5 +1,6 @@
 ﻿using HauseCalcApi.Data;
 using HauseCalcApi.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using System.Threading.Tasks;
 
@@ -9,6 +10,9 @@ namespace HauseCalcApi.Core
     {
         Task<Guid> UserCalculationRequest(UserCalculationRequestDTO costService);
         Task<UserCalculationRequest> GetCalculationCost(Guid externalId);
+        void UserContactsAdd(UserContacts userContacts);
+        Task<List<UserContacts>> GetAllOrders();
+        Task<UserOrder> GetOrder(int userId);
     }
 }
 

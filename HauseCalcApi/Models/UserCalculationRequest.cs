@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace HauseCalcApi.Models
 {
@@ -6,7 +7,7 @@ namespace HauseCalcApi.Models
     {
         [Key]
         public int Id { get; set; }
-        public Guid ExternalId { get; set; }
+        public Guid RequestId { get; set; }
         public int AreaHouseSquarMeters { get; set; }
         public int Walls { get; set; }
         public int Projects { get; set; }

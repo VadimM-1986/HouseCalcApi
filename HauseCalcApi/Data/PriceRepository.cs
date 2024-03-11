@@ -1,6 +1,7 @@
 ﻿using HauseCalcApi.Core;
 using HauseCalcApi.Models;
 using Microsoft.EntityFrameworkCore;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace HauseCalcApi.Data
 {
@@ -13,6 +14,7 @@ namespace HauseCalcApi.Data
         {
             _context = context;
         }
+
 
         // Price receipt
         public async Task<int> GetPriceByIdAsync(int id)
@@ -40,7 +42,7 @@ namespace HauseCalcApi.Data
             {
                 new UserCalculationRequest
                 {
-                    ExternalId = setServiceClient.ExternalId,
+                    RequestId = setServiceClient.RequestId,
                     Id = setServiceClient.Id,
                     AreaHouseSquarMeters = setServiceClient.AreaHouseSquarMeters,
                     Walls = setServiceClient.Walls,
@@ -57,8 +59,8 @@ namespace HauseCalcApi.Data
                     Door = setServiceClient.Door,
                     AllCost = setServiceClient.AllCost,
                     DateTime = setServiceClient.DateTime
-                },
-            };
+                }
+        };
 
             await _context.SetServiceClients.AddRangeAsync(setServiceClients);
             await _context.SaveChangesAsync();
@@ -66,15 +68,36 @@ namespace HauseCalcApi.Data
 
 
         // Get a calculation
-        public async Task<UserCalculationRequest> GetCalculationCost(Guid externalId)
+        public async Task<UserCalculationRequest> GetCalculationCost(Guid RequestId)
         {
-            UserCalculationRequest calculationCost = await _context.SetServiceClients.SingleOrDefaultAsync(el => el.ExternalId == externalId);
-
-            if (calculationCost == null)
-            {
-                throw new InvalidOperationException($"Is not found guid: {externalId}");
-            }
+            UserCalculationRequest calculationCost = await _context.SetServiceClients.SingleOrDefaultAsync(el => el.RequestId == RequestId);
             return calculationCost;
+        }
+
+
+        // Add Database Contacts
+        public async Task FillDatabaseContactsAsync(UserContacts Contact)
+        {
+            var userContacts = new List<UserContacts>
+            {
+                new UserContacts
+                {
+                    NameUser = Contact.NameUser,
+                    PhoneUser = Contact.PhoneUser,
+                    UserRequestLists = Contact.UserRequestLists
+                },
+            };
+
+            await _context.SetUserContacts.AddRangeAsync(userContacts);
+            await _context.SaveChangesAsync();
+        }
+
+
+        // Get all orders
+        public async Task<List<UserContacts>> GetAllUserContacts()
+        {
+            List<UserContacts> userContacts = await _context.SetUserContacts.ToListAsync();
+            return userContacts;
         }
     }
 }

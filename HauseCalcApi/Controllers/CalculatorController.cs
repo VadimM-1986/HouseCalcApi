@@ -21,7 +21,6 @@ namespace HauseCalcApi.Controllers
             _calculatorService = calculatorService;
         }
 
-
         [HttpPost]
         public async Task<ActionResult<Guid>> RequestHouseCalculation(UserCalculationRequestDTO costService)
         {
@@ -29,11 +28,11 @@ namespace HauseCalcApi.Controllers
             return calculationClientId;
         }
 
-
         [HttpGet("getCalculation/{externalId}")]
         public async Task<ActionResult<UserCalculationRequest>> GetCalculationCost(Guid externalId)
         {
             UserCalculationRequest resultPriceValue = await _calculatorService.GetCalculationCost(externalId);
+
             return resultPriceValue;
         }
     }

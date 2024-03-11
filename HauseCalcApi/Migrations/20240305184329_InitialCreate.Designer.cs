@@ -3,6 +3,7 @@ using System;
 using HauseCalcApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using AppContext = HauseCalcApi.Models.AppContext;
 
@@ -11,9 +12,11 @@ using AppContext = HauseCalcApi.Models.AppContext;
 namespace HauseCalcApi.Migrations
 {
     [DbContext(typeof(AppContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20240305184329_InitialCreate")]
+    partial class InitialCreate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
@@ -160,10 +163,15 @@ namespace HauseCalcApi.Migrations
                     b.Property<int>("Seams")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("UserContactsId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Walls")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserContactsId");
 
                     b.ToTable("SetServiceClients");
                 });
@@ -187,6 +195,22 @@ namespace HauseCalcApi.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("SetUserContacts");
+                });
+
+            modelBuilder.Entity("HauseCalcApi.Models.UserCalculationRequest", b =>
+                {
+                    b.HasOne("HauseCalcApi.Models.UserContacts", "UserContacts")
+                        .WithMany("UserRequests")
+                        .HasForeignKey("UserContactsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("UserContacts");
+                });
+
+            modelBuilder.Entity("HauseCalcApi.Models.UserContacts", b =>
+                {
+                    b.Navigation("UserRequests");
                 });
 #pragma warning restore 612, 618
         }

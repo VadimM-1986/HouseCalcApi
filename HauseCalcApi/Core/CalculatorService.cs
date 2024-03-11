@@ -1,4 +1,6 @@
 ﻿using HauseCalcApi.Models;
+using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace HauseCalcApi.Core
 {
@@ -6,6 +8,7 @@ namespace HauseCalcApi.Core
     {
         private readonly IPriceRepository _priceRepository;
         private readonly UserCalculationRequest _setService;
+        private readonly UserContacts _userContacts;
         // Бизнес логика
 
         // Передаем Id услуги
@@ -26,6 +29,7 @@ namespace HauseCalcApi.Core
     {
         _priceRepository = priceRepository;
         _setService = new UserCalculationRequest();
+        _userContacts = new UserContacts();
         }
 
         public async Task<Guid> UserCalculationRequest(UserCalculationRequestDTO userCalculationRequest)
@@ -37,7 +41,7 @@ namespace HauseCalcApi.Core
             }
             else
             {
-                _setService.ExternalId = Guid.NewGuid();
+                _setService.RequestId = Guid.NewGuid();
 
                 _setService.AreaHouseSquarMeters = userCalculationRequest.AreaHouseSquarMeters;
 
@@ -112,7 +116,7 @@ namespace HauseCalcApi.Core
 
             await _priceRepository.FillDatabaseCalculationCustomerAsync(_setService);
 
-            return _setService.ExternalId;    
+            return _setService.RequestId;    
         }
 
 
@@ -121,6 +125,81 @@ namespace HauseCalcApi.Core
         {
             UserCalculationRequest userCalculationRequest = await _priceRepository.GetCalculationCost(guid);
             return userCalculationRequest;
+        }
+
+
+        // User Contacts Add
+        public void UserContactsAdd(UserContacts userContacts)
+        {
+
+            if (userContacts.NameUser != null)
+            {
+                _userContacts.NameUser = userContacts.NameUser;
+            }
+
+            if (userContacts.PhoneUser != null)
+            {
+                _userContacts.PhoneUser = userContacts.PhoneUser;
+            }
+
+            if (userContacts.UserRequestLists != null)
+            {
+                _userContacts.UserRequestLists = userContacts.UserRequestLists;
+            }
+
+            _priceRepository.FillDatabaseContactsAsync(_userContacts);
+        }
+
+
+        // Get All Orders
+        public async Task <List<UserContacts>> GetAllOrders()
+        {
+            List<UserContacts> userContacts = await _priceRepository.GetAllUserContacts();
+            return userContacts;
+        }
+
+
+        // Get User Contact
+        public async Task <UserOrder> GetOrder(int userId)
+        {
+            List<UserContacts> userContacts = await _priceRepository.GetAllUserContacts();
+            UserContacts userContactOne = null;
+
+            foreach (UserContacts userContact in userContacts)
+            {
+                if (userId == userContact.Id)
+                {
+                    userContactOne = new UserContacts
+                    {
+                        NameUser = userContact.NameUser,
+                        PhoneUser = userContact.PhoneUser,
+                        UserRequestLists = userContact.UserRequestLists
+                    };
+                    break;
+                }
+            }
+
+            if (userContactOne == null)
+            {
+                throw new InvalidOperationException($"Error null");
+            }
+
+            List<Guid> guids = userContactOne.UserRequestLists;
+            List<UserCalculationRequest> userCalculationRequests = new List<UserCalculationRequest>();
+
+            foreach (Guid guid in guids)
+            {
+                UserCalculationRequest userCalculationRequest = await _priceRepository.GetCalculationCost(guid);
+                userCalculationRequests.Add(userCalculationRequest);
+            }
+
+            var result = new UserOrder
+            {
+                UserContact = userContactOne,
+                UserCalculationRequests = userCalculationRequests
+            };
+
+            return result;
         }
     }
 }
