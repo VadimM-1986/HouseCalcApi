@@ -129,7 +129,7 @@ namespace HauseCalcApi.Core
 
 
         // User Contacts Add
-        public void UserContactsAdd(UserContacts userContacts)
+        public async Task UserContactsAdd(UserContacts userContacts)
         {
 
             if (userContacts.NameUser != null)
@@ -147,7 +147,7 @@ namespace HauseCalcApi.Core
                 _userContacts.UserRequestLists = userContacts.UserRequestLists;
             }
 
-            _priceRepository.FillDatabaseContactsAsync(_userContacts);
+            await _priceRepository.FillDatabaseContactsAsync(_userContacts);
         }
 
 
@@ -198,7 +198,7 @@ namespace HauseCalcApi.Core
                 UserContact = userContactOne,
                 UserCalculationRequests = userCalculationRequests
             };
-
+            
             return result;
         }
     }

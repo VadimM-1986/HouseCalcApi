@@ -16,24 +16,41 @@ namespace HauseCalcApi.Controllers
     public class CalculatorController : ControllerBase
     {
         private readonly ICalculatorService _calculatorService;
+
         public CalculatorController(ICalculatorService calculatorService)
         {
             _calculatorService = calculatorService;
         }
 
+
         [HttpPost]
         public async Task<ActionResult<Guid>> RequestHouseCalculation(UserCalculationRequestDTO costService)
         {
-            Guid calculationClientId = await _calculatorService.UserCalculationRequest(costService);
-            return calculationClientId;
+            try
+            {
+                Guid calculationClientId = await _calculatorService.UserCalculationRequest(costService);
+                return calculationClientId;
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+
 
         [HttpGet("getCalculation/{externalId}")]
         public async Task<ActionResult<UserCalculationRequest>> GetCalculationCost(Guid externalId)
         {
-            UserCalculationRequest resultPriceValue = await _calculatorService.GetCalculationCost(externalId);
+            try
+            {
+                UserCalculationRequest resultPriceValue = await _calculatorService.GetCalculationCost(externalId);
+                return resultPriceValue;
+            }
+            catch(Exception ex)
+            {
+                return NotFound("Resource not found");
+            }
 
-            return resultPriceValue;
         }
     }
 }

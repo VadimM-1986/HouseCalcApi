@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using HauseCalcApi.Models;
 using HauseCalcApi.Core;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace HauseCalcApi.Controllers
 {
@@ -16,22 +17,32 @@ namespace HauseCalcApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly ICalculatorService _calculatorService;
+
         public UserController(ICalculatorService calculatorService)
         {
             _calculatorService = calculatorService;
         }
 
+
         [HttpPost]
-        public ActionResult UserContacts(UserContactsDTO userContactsDTO)
+        public async Task<ActionResult> UserContactsAdd(UserContactsDTO userContactsDTO)
         {
-            var userContacts = new UserContacts
+            try
             {
-                NameUser = userContactsDTO.NameUser,
-                PhoneUser = userContactsDTO.PhoneUser,
-                UserRequestLists = userContactsDTO.UserRequestLists
-            };
-            _calculatorService.UserContactsAdd(userContacts);
-            return Ok();
+                var userContacts = new UserContacts
+                {
+                    NameUser = userContactsDTO.NameUser,
+                    PhoneUser = userContactsDTO.PhoneUser,
+                    UserRequestLists = userContactsDTO.UserRequestLists
+                };
+
+                await _calculatorService.UserContactsAdd(userContacts);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error: {ex.Message}");
+            }
         }
     }
 }
