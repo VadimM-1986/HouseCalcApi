@@ -27,22 +27,27 @@ namespace HauseCalcApi.Controllers
         [HttpPost]
         public async Task<ActionResult> UserContactsAdd(UserContactsDTO userContactsDTO)
         {
-            try
+            var error = ValidateUserRequest(userContactsDTO);
+            if(error != null)
             {
-                var userContacts = new UserContacts
-                {
-                    NameUser = userContactsDTO.NameUser,
-                    PhoneUser = userContactsDTO.PhoneUser,
-                    UserRequestLists = userContactsDTO.UserRequestLists
-                };
+                return BadRequest(error);
+            }
 
-                await _calculatorService.UserContactsAdd(userContacts);
-                return Ok();
-            }
-            catch (Exception ex)
+            var userContacts = new UserContacts
             {
-                return BadRequest($"Error: {ex.Message}");
-            }
+                NameUser = userContactsDTO.NameUser,
+                PhoneUser = userContactsDTO.PhoneUser,
+                UserRequestLists = userContactsDTO.UserRequestLists
+            };
+
+            await _calculatorService.UserContactsAdd(userContacts);
+            return Ok();
+
+        }
+
+        private string? ValidateUserRequest(UserContactsDTO dto){
+            //...
+            return null;
         }
     }
 }

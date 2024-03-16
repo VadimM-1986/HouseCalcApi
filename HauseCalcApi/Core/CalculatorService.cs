@@ -181,7 +181,7 @@ namespace HauseCalcApi.Core
 
             if (userContactOne == null)
             {
-                throw new InvalidOperationException($"Error null");
+                throw new UserNotFoundException();
             }
 
             List<Guid> guids = userContactOne.UserRequestLists;

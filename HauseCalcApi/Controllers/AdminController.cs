@@ -18,18 +18,19 @@ namespace HauseCalcApi.Controllers
     {
         
         private readonly ICalculatorService _calculatorService;
+        private readonly ILogger<AdminController> _logger;
 
-        public AdminController(ICalculatorService calculatorService)
+        public AdminController(ICalculatorService calculatorService, ILogger<AdminController> logger)
         {
             _calculatorService = calculatorService;
+            _logger = logger;
         }
 
 
         [HttpGet("getUsersOrders")]
         public async Task <ActionResult<UserContactsResponse>> GetAllUsersOrders()
         {
-            try
-            {
+
                 List<UserContacts> resultAllUsersOrders = await _calculatorService.GetAllOrders();
 
                 var response = new UserContactsResponse
@@ -38,11 +39,8 @@ namespace HauseCalcApi.Controllers
                 };
 
                 return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            
+
         }
 
 
@@ -51,12 +49,16 @@ namespace HauseCalcApi.Controllers
         {
             try
             {
+                throw new UserNotFoundException
                 UserOrder userOrder = await _calculatorService.GetOrder(userId);
                 return Ok(userOrder);
             }
-            catch (Exception ex)
+            catch (UserNotFoundException _)
             {
-                return NotFound("Resource not found");
+                Console.WriteLine($"User not found {userId}");
+                _logger.LogWarning($"User not found {userId}");
+                return NotFound("User not found");
+
             }
         }
     }
