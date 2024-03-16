@@ -49,7 +49,7 @@ namespace HauseCalcApi.Controllers
         {
             try
             {
-                throw new UserNotFoundException
+                throw new UserNotFoundException()
                 UserOrder userOrder = await _calculatorService.GetOrder(userId);
                 return Ok(userOrder);
             }

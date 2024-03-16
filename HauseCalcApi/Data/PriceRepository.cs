@@ -74,6 +74,21 @@ namespace HauseCalcApi.Data
             return calculationCost;
         }
 
+        // public async Task<UserCalculationRequest[]> GetCalculationCosts(Guid[] RequestIds)
+        // {
+        //     UserCalculationRequest calculationCost = await _context.SetServiceClients
+        //     // .Join(_context.SetUserContacts,
+        //     //     a => a.RequestId,
+        //     //     b => b.UserRequestLists
+        //     //     (a,b) => new {}})
+
+        //         // https://metanit.com/sharp/efcore/5.3.php !!!!!!!!!!!!!
+        //         // почитать и создать проект потрогать join понять как работает и переписать чтобы можно было 
+        //         // соеденить таблицу с рассчетами и ID запросов пользователя
+
+        //     return calculationCost;
+        // }
+
 
         // Add Database Contacts
         public async Task FillDatabaseContactsAsync(UserContacts Contact)
