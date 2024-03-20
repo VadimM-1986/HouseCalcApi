@@ -74,7 +74,7 @@ namespace HauseCalcApi.Data
             return calculationCost;
         }
 
-
+     
         // Add Database Contacts
         public async Task FillDatabaseContactsAsync(UserContacts Contact)
         {

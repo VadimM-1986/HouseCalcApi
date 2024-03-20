@@ -18,10 +18,12 @@ namespace HauseCalcApi.Controllers
     {
         
         private readonly ICalculatorService _calculatorService;
+        private readonly ILogger<AdminController> _logger;
 
-        public AdminController(ICalculatorService calculatorService)
+        public AdminController(ICalculatorService calculatorService, ILogger<AdminController> logger)
         {
             _calculatorService = calculatorService;
+            _logger = logger;
         }
 
 
@@ -37,6 +39,8 @@ namespace HauseCalcApi.Controllers
                 };
 
                 return Ok(response);
+            
+
         }
 
 
@@ -44,15 +48,18 @@ namespace HauseCalcApi.Controllers
         public async Task<IActionResult> GetUserOrders(int userId)
         {
             try
-            {
+            {              
                 UserOrder userOrder = await _calculatorService.GetOrder(userId);
                 return Ok(userOrder);
             }
-            catch (Exception ex)
+            catch (UserNotFoundException _)
             {
                 return NotFound("User not found");
+                throw new UserNotFoundException();
+                _logger.LogWarning($"User not found {userId}");
             }
         }
+
     }
 }
 

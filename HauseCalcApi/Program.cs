@@ -3,10 +3,16 @@ using HauseCalcApi.Models;
 using AppContext = HauseCalcApi.Models.AppContext;
 using HauseCalcApi.Core;
 using HauseCalcApi.Data;
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Host.UseSerilog((context, services, configuration) => configuration
+    .ReadFrom.Configuration(context.Configuration)
+    .ReadFrom.Services(services)
+    .Enrich.FromLogContext()
+    .WriteTo.Console());
 // Add services to the container.
 
 builder.Services.AddControllers();
