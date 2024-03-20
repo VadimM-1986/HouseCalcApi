@@ -28,7 +28,6 @@ namespace HauseCalcApi.Controllers
         [HttpPost]
         public async Task<ActionResult> UserContactsAdd(UserContactsDTO userContactsDTO)
         {
-
             var error = ValidateUserRequest(userContactsDTO);
             if (error != null)
             {
@@ -43,8 +42,8 @@ namespace HauseCalcApi.Controllers
                 UserRequestLists = userContactsDTO.UserRequestLists
             };
 
-            await _calculatorService.UserContactsAdd(userContacts);
-            return Ok();
+            int? Id = await _calculatorService.UserContactsAdd(userContacts);
+            return Ok(Id);
         }
 
 

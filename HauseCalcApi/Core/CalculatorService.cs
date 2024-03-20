@@ -128,7 +128,7 @@ namespace HauseCalcApi.Core
 
 
         // User Contacts Add
-        public async Task UserContactsAdd(UserContacts userContacts)
+        public async Task<int?> UserContactsAdd(UserContacts userContacts)
         {
             UserContacts userContact = new UserContacts();
 
@@ -136,7 +136,8 @@ namespace HauseCalcApi.Core
                 userContact.PhoneUser = userContacts.PhoneUser;
                 userContact.UserRequestLists = userContacts.UserRequestLists;
 
-            await _priceRepository.FillDatabaseContactsAsync(userContact);
+            int? Id = await _priceRepository.FillDatabaseContactsAsync(userContact);
+            return Id;
         }
 
 

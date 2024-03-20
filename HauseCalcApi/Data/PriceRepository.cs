@@ -76,7 +76,7 @@ namespace HauseCalcApi.Data
 
      
         // Add Database Contacts
-        public async Task FillDatabaseContactsAsync(UserContacts Contact)
+        public async Task<int?> FillDatabaseContactsAsync(UserContacts Contact)
         {
             var userContacts = new List<UserContacts>
             {
@@ -90,6 +90,9 @@ namespace HauseCalcApi.Data
 
             await _context.SetUserContacts.AddRangeAsync(userContacts);
             await _context.SaveChangesAsync();
+
+            int? Id = userContacts.LastOrDefault()?.Id;
+            return Id;
         }
 
 
