@@ -26,31 +26,34 @@ namespace HauseCalcApi.Controllers
         [HttpPost]
         public async Task<ActionResult<Guid>> RequestHouseCalculation(UserCalculationRequestDTO costService)
         {
-            try
+            var error = ValidateAreaHouseSquarMetersRequest(costService);
+            if (error != null)
             {
-                Guid calculationClientId = await _calculatorService.UserCalculationRequest(costService);
-                return calculationClientId;
+                Console.WriteLine(error);
+                return BadRequest(error);
             }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+
+            Guid calculationClientId = await _calculatorService.UserCalculationRequest(costService);
+            return calculationClientId;
         }
 
 
         [HttpGet("getCalculation/{externalId}")]
         public async Task<ActionResult<UserCalculationRequest>> GetCalculationCost(Guid externalId)
         {
-            try
+            UserCalculationRequest resultPriceValue = await _calculatorService.GetCalculationCost(externalId);
+            return resultPriceValue;
+        }
+
+
+        private string? ValidateAreaHouseSquarMetersRequest(UserCalculationRequestDTO costService)
+        {
+            if (costService.AreaHouseSquarMeters == 0)
             {
-                UserCalculationRequest resultPriceValue = await _calculatorService.GetCalculationCost(externalId);
-                return resultPriceValue;
-            }
-            catch(Exception ex)
-            {
-                return NotFound("Resource not found");
+                return "Not all data is filled in";
             }
 
+            return null;
         }
     }
 }

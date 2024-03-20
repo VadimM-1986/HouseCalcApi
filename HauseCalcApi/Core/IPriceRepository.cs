@@ -9,6 +9,7 @@ namespace HauseCalcApi.Core
         Task<UserCalculationRequest> GetCalculationCost(Guid guid);
         Task FillDatabaseContactsAsync(UserContacts userContacts);
         Task<List<UserContacts>> GetAllUserContacts();
+        Task<UserContacts> GetUser(int userId);
     }
 }
 

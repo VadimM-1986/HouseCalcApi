@@ -28,8 +28,7 @@ namespace HauseCalcApi.Controllers
         [HttpGet("getUsersOrders")]
         public async Task <ActionResult<UserContactsResponse>> GetAllUsersOrders()
         {
-            try
-            {
+
                 List<UserContacts> resultAllUsersOrders = await _calculatorService.GetAllOrders();
 
                 var response = new UserContactsResponse
@@ -38,11 +37,6 @@ namespace HauseCalcApi.Controllers
                 };
 
                 return Ok(response);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
         }
 
 
@@ -56,7 +50,7 @@ namespace HauseCalcApi.Controllers
             }
             catch (Exception ex)
             {
-                return NotFound("Resource not found");
+                return NotFound("User not found");
             }
         }
     }

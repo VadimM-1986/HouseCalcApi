@@ -70,7 +70,7 @@ namespace HauseCalcApi.Data
         // Get a calculation
         public async Task<UserCalculationRequest> GetCalculationCost(Guid RequestId)
         {
-            UserCalculationRequest calculationCost = await _context.SetServiceClients.SingleOrDefaultAsync(el => el.RequestId == RequestId);
+            UserCalculationRequest? calculationCost = await _context.SetServiceClients.SingleOrDefaultAsync(el => el.RequestId == RequestId);
             return calculationCost;
         }
 
@@ -97,6 +97,14 @@ namespace HauseCalcApi.Data
         public async Task<List<UserContacts>> GetAllUserContacts()
         {
             List<UserContacts> userContacts = await _context.SetUserContacts.ToListAsync();
+            return userContacts;
+        }
+
+
+        // Get user
+        public async Task<UserContacts> GetUser(int userId)
+        {
+            UserContacts? userContacts = await _context.SetUserContacts.SingleOrDefaultAsync(el => el.Id == userId);
             return userContacts;
         }
     }

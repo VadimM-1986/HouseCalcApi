@@ -9,6 +9,7 @@ using HauseCalcApi.Models;
 using HauseCalcApi.Core;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Microsoft.AspNetCore.Http.HttpResults;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace HauseCalcApi.Controllers
 {
@@ -27,22 +28,34 @@ namespace HauseCalcApi.Controllers
         [HttpPost]
         public async Task<ActionResult> UserContactsAdd(UserContactsDTO userContactsDTO)
         {
-            try
-            {
-                var userContacts = new UserContacts
-                {
-                    NameUser = userContactsDTO.NameUser,
-                    PhoneUser = userContactsDTO.PhoneUser,
-                    UserRequestLists = userContactsDTO.UserRequestLists
-                };
 
-                await _calculatorService.UserContactsAdd(userContacts);
-                return Ok();
-            }
-            catch (Exception ex)
+            var error = ValidateUserRequest(userContactsDTO);
+            if (error != null)
             {
-                return BadRequest($"Error: {ex.Message}");
+                Console.WriteLine(error);
+                return BadRequest(error);
             }
+
+            var userContacts = new UserContacts
+            {
+                NameUser = userContactsDTO.NameUser,
+                PhoneUser = userContactsDTO.PhoneUser,
+                UserRequestLists = userContactsDTO.UserRequestLists
+            };
+
+            await _calculatorService.UserContactsAdd(userContacts);
+            return Ok();
+        }
+
+
+        private string? ValidateUserRequest(UserContactsDTO dto)
+        {
+            if (dto == null)
+            {
+                return "Not all data is filled in";
+            }
+
+            return null;
         }
     }
 }

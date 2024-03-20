@@ -29,7 +29,6 @@ namespace HauseCalcApi.Core
     {
         _priceRepository = priceRepository;
         _setService = new UserCalculationRequest();
-        _userContacts = new UserContacts();
         }
 
         public async Task<Guid> UserCalculationRequest(UserCalculationRequestDTO userCalculationRequest)
@@ -131,23 +130,13 @@ namespace HauseCalcApi.Core
         // User Contacts Add
         public async Task UserContactsAdd(UserContacts userContacts)
         {
+            UserContacts userContact = new UserContacts();
 
-            if (userContacts.NameUser != null)
-            {
-                _userContacts.NameUser = userContacts.NameUser;
-            }
+                userContact.NameUser = userContacts.NameUser;
+                userContact.PhoneUser = userContacts.PhoneUser;
+                userContact.UserRequestLists = userContacts.UserRequestLists;
 
-            if (userContacts.PhoneUser != null)
-            {
-                _userContacts.PhoneUser = userContacts.PhoneUser;
-            }
-
-            if (userContacts.UserRequestLists != null)
-            {
-                _userContacts.UserRequestLists = userContacts.UserRequestLists;
-            }
-
-            await _priceRepository.FillDatabaseContactsAsync(_userContacts);
+            await _priceRepository.FillDatabaseContactsAsync(userContact);
         }
 
 
@@ -162,41 +151,25 @@ namespace HauseCalcApi.Core
         // Get User Contact
         public async Task <UserOrder> GetOrder(int userId)
         {
-            List<UserContacts> userContacts = await _priceRepository.GetAllUserContacts();
-            UserContacts userContactOne = null;
+            UserContacts userContacts = await _priceRepository.GetUser(userId);
 
-            foreach (UserContacts userContact in userContacts)
-            {
-                if (userId == userContact.Id)
-                {
-                    userContactOne = new UserContacts
-                    {
-                        NameUser = userContact.NameUser,
-                        PhoneUser = userContact.PhoneUser,
-                        UserRequestLists = userContact.UserRequestLists
-                    };
-                    break;
-                }
-            }
+            List<Guid> guids = userContacts.UserRequestLists;
 
-            if (userContactOne == null)
-            {
-                throw new InvalidOperationException($"Error null");
-            }
+            List<UserCalculationRequest> userCalculationRequestsOut = new List<UserCalculationRequest>();
 
-            List<Guid> guids = userContactOne.UserRequestLists;
-            List<UserCalculationRequest> userCalculationRequests = new List<UserCalculationRequest>();
+
+
 
             foreach (Guid guid in guids)
             {
                 UserCalculationRequest userCalculationRequest = await _priceRepository.GetCalculationCost(guid);
-                userCalculationRequests.Add(userCalculationRequest);
+                userCalculationRequestsOut.Add(userCalculationRequest);
             }
 
             var result = new UserOrder
             {
-                UserContact = userContactOne,
-                UserCalculationRequests = userCalculationRequests
+                UserContact = userContacts,
+                UserCalculationRequests = userCalculationRequestsOut
             };
             
             return result;
