@@ -35,7 +35,7 @@ namespace HauseCalcApi.Controllers
                 return BadRequest(error);
             }
 
-            var userContacts = new UserContacts
+            var userContacts = new UserContact
             {
                 NameUser = userContactsDTO.NameUser,
                 PhoneUser = userContactsDTO.PhoneUser,

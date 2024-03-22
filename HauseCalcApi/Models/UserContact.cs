@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace HauseCalcApi.Models
 {
-    public class UserContacts
+    public class UserContact
     {
         [Key]
         public int Id { get; set; }
         public string? NameUser { get; set; }
         public string? PhoneUser { get; set; }
-        public List<Guid> UserRequestLists { get; set; } = new();
+        public List<string> UserRequestLists { get; set; } = new();
     }
 }

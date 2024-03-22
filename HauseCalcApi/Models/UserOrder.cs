@@ -5,7 +5,7 @@ namespace HauseCalcApi.Models
 {
     public class UserOrder
     {
-        public UserContacts? UserContact { get; set; }
+        public UserContact? UserContact { get; set; }
         public List<UserCalculationRequest>? UserCalculationRequests { get; set; }
     }
 }

@@ -68,23 +68,50 @@ namespace HauseCalcApi.Data
 
 
         // Get a calculation
-        public async Task<UserCalculationRequest> GetCalculationCost(Guid RequestId)
+        public async Task<UserCalculationRequest> GetCalculationCost(Guid requestId)
         {
-            UserCalculationRequest? calculationCost = await _context.SetServiceClients.SingleOrDefaultAsync(el => el.RequestId == RequestId);
+            UserCalculationRequest? calculationCost = await _context.SetServiceClients.SingleOrDefaultAsync(el => el.RequestId == requestId);
             return calculationCost;
         }
 
-     
-        // Add Database Contacts
-        public async Task<int?> FillDatabaseContactsAsync(UserContacts Contact)
+
+        // Get Guid User for Admin
+        public async Task<List<UserCalculationRequest>> GetCalculationRequestUser(List<string> guids)
         {
-            var userContacts = new List<UserContacts>
+            List<UserCalculationRequest> userCalculationRequestsOut = new List<UserCalculationRequest>();
+
+            var query = from userCalculation in _context.SetServiceClients
+                        join settlementId in _context.SetSettlementIDs
+                        on userCalculation.RequestId equals settlementId.RequestID
+                        select userCalculation;
+
+            foreach (var guid in guids)
             {
-                new UserContacts
+                if (Guid.TryParse(guid, out Guid resultGuid))
                 {
-                    NameUser = Contact.NameUser,
-                    PhoneUser = Contact.PhoneUser,
-                    UserRequestLists = Contact.UserRequestLists
+                    // Преобразование строки в GUID удалось, используем resultGuid
+                    UserCalculationRequest? userCalculationRequest = await query.FirstOrDefaultAsync(x => x.RequestId == resultGuid);
+                    if (userCalculationRequest != null)
+                    {
+                        userCalculationRequestsOut.Add(userCalculationRequest);
+                    }
+                }
+            }
+
+            return userCalculationRequestsOut;
+        }
+
+
+        // Add Database Contacts
+        public async Task<int?> FillDatabaseContactsAsync(UserContact contact)
+        {
+            var userContacts = new List<UserContact>
+            {
+                new UserContact
+                {
+                    NameUser = contact.NameUser,
+                    PhoneUser = contact.PhoneUser,
+                    UserRequestLists = contact.UserRequestLists
                 },
             };
 
@@ -92,22 +119,41 @@ namespace HauseCalcApi.Data
             await _context.SaveChangesAsync();
 
             int? Id = userContacts.LastOrDefault()?.Id;
+
+
+            // Add tsble SettlemmentIDs
+            var settlementIDs = new List<SettlementID>();
+
+            foreach (var requestID in contact.UserRequestLists)
+            {
+                var settlementID = new SettlementID()
+                {
+                    ContactID = (int)Id,
+                    RequestID = Guid.Parse(requestID)
+                };
+
+                settlementIDs.Add(settlementID);
+            }
+
+            await _context.SetSettlementIDs.AddRangeAsync(settlementIDs);
+            await _context.SaveChangesAsync();
+
             return Id;
         }
 
 
         // Get all orders
-        public async Task<List<UserContacts>> GetAllUserContacts()
+        public async Task<List<UserContact>> GetAllUserContacts()
         {
-            List<UserContacts> userContacts = await _context.SetUserContacts.ToListAsync();
+            List<UserContact> userContacts = await _context.SetUserContacts.ToListAsync();
             return userContacts;
         }
 
 
         // Get user
-        public async Task<UserContacts> GetUser(int userId)
+        public async Task<UserContact> GetUser(int userId)
         {
-            UserContacts? userContacts = await _context.SetUserContacts.SingleOrDefaultAsync(el => el.Id == userId);
+            UserContact? userContacts = await _context.SetUserContacts.SingleOrDefaultAsync(el => el.Id == userId);
             return userContacts;
         }
     }

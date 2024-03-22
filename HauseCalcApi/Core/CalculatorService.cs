@@ -8,7 +8,7 @@ namespace HauseCalcApi.Core
     {
         private readonly IPriceRepository _priceRepository;
         private readonly UserCalculationRequest _setService;
-        private readonly UserContacts _userContacts;
+        private readonly UserContact _userContacts;
         // Бизнес логика
 
         // Передаем Id услуги
@@ -128,9 +128,9 @@ namespace HauseCalcApi.Core
 
 
         // User Contacts Add
-        public async Task<int?> UserContactsAdd(UserContacts userContacts)
+        public async Task<int?> UserContactsAdd(UserContact userContacts)
         {
-            UserContacts userContact = new UserContacts();
+            UserContact userContact = new UserContact();
 
                 userContact.NameUser = userContacts.NameUser;
                 userContact.PhoneUser = userContacts.PhoneUser;
@@ -142,38 +142,32 @@ namespace HauseCalcApi.Core
 
 
         // Get All Orders
-        public async Task <List<UserContacts>> GetAllOrders()
+        public async Task <List<UserContact>> GetAllOrders()
         {
-            List<UserContacts> userContacts = await _priceRepository.GetAllUserContacts();
+            List<UserContact> userContacts = await _priceRepository.GetAllUserContacts();
             return userContacts;
         }
 
 
-        // Get User Contact
-        public async Task <UserOrder> GetOrder(int userId)
+        // Get User Contact for Admin
+        public async Task<UserOrder> GetOrder(int userId)
         {
-            UserContacts userContacts = await _priceRepository.GetUser(userId);
-
-            List<Guid> guids = userContacts.UserRequestLists;
-
-            List<UserCalculationRequest> userCalculationRequestsOut = new List<UserCalculationRequest>();
+            UserContact userContacts = await _priceRepository.GetUser(userId);
+            List<string> guids = userContacts.UserRequestLists;
 
 
-
-
-            foreach (Guid guid in guids)
-            {
-                UserCalculationRequest userCalculationRequest = await _priceRepository.GetCalculationCost(guid);
-                userCalculationRequestsOut.Add(userCalculationRequest);
-            }
+           List<UserCalculationRequest> userCalculationRequests = await _priceRepository.GetCalculationRequestUser(guids);
 
             var result = new UserOrder
             {
                 UserContact = userContacts,
-                UserCalculationRequests = userCalculationRequestsOut
+                UserCalculationRequests = userCalculationRequests
             };
-            
+
             return result;
         }
+
+
+
     }
 }

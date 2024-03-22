@@ -31,7 +31,7 @@ namespace HauseCalcApi.Controllers
         public async Task <ActionResult<UserContactsResponse>> GetAllUsersOrders()
         {
 
-                List<UserContacts> resultAllUsersOrders = await _calculatorService.GetAllOrders();
+                List<UserContact> resultAllUsersOrders = await _calculatorService.GetAllOrders();
 
                 var response = new UserContactsResponse
                 {
@@ -39,8 +39,6 @@ namespace HauseCalcApi.Controllers
                 };
 
                 return Ok(response);
-            
-
         }
 
 
@@ -48,7 +46,7 @@ namespace HauseCalcApi.Controllers
         public async Task<IActionResult> GetUserOrders(int userId)
         {
             try
-            {              
+            {
                 UserOrder userOrder = await _calculatorService.GetOrder(userId);
                 return Ok(userOrder);
             }

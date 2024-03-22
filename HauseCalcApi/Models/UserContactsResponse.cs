@@ -2,6 +2,6 @@
 {
     public class UserContactsResponse
     {
-        public List<UserContacts>? UserContacts { get; set; }
+        public List<UserContact>? UserContacts { get; set; }
     }
 }

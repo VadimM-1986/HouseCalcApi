@@ -10,8 +10,8 @@ namespace HauseCalcApi.Core
     {
         Task<Guid> UserCalculationRequest(UserCalculationRequestDTO costService);
         Task<UserCalculationRequest> GetCalculationCost(Guid externalId);
-        Task<int?> UserContactsAdd(UserContacts userContacts);
-        Task<List<UserContacts>> GetAllOrders();
+        Task<int?> UserContactsAdd(UserContact userContacts);
+        Task<List<UserContact>> GetAllOrders();
         Task<UserOrder> GetOrder(int userId);
     }
 }
