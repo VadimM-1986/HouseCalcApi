@@ -18,6 +18,23 @@ namespace HauseCalcApi.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
 
+            modelBuilder.Entity("HauseCalcApi.Models.ClientRequestId", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ContactID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("RequestID")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClientRequestIds");
+                });
+
             modelBuilder.Entity("HauseCalcApi.Models.Price", b =>
                 {
                     b.Property<int>("Id")
@@ -109,23 +126,6 @@ namespace HauseCalcApi.Migrations
                         });
                 });
 
-            modelBuilder.Entity("HauseCalcApi.Models.SettlementID", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("ContactID")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<Guid>("RequestID")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SetSettlementIDs");
-                });
-
             modelBuilder.Entity("HauseCalcApi.Models.UserCalculationRequest", b =>
                 {
                     b.Property<int>("Id")
@@ -182,7 +182,7 @@ namespace HauseCalcApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SetServiceClients");
+                    b.ToTable("UserCalculationRequests");
                 });
 
             modelBuilder.Entity("HauseCalcApi.Models.UserContact", b =>
@@ -197,13 +197,9 @@ namespace HauseCalcApi.Migrations
                     b.Property<string>("PhoneUser")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserRequestLists")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
                     b.HasKey("Id");
 
-                    b.ToTable("SetUserContacts");
+                    b.ToTable("UserContacts");
                 });
 #pragma warning restore 612, 618
         }

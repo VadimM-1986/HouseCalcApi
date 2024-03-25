@@ -14,6 +14,20 @@ namespace HauseCalcApi.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "ClientRequestIds",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    ContactID = table.Column<int>(type: "INTEGER", nullable: false),
+                    RequestID = table.Column<Guid>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClientRequestIds", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Prices",
                 columns: table => new
                 {
@@ -28,27 +42,11 @@ namespace HauseCalcApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SetUserContacts",
+                name: "UserCalculationRequests",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    UserRequestLists = table.Column<string>(type: "TEXT", nullable: false),
-                    NameUser = table.Column<string>(type: "TEXT", nullable: true),
-                    PhoneUser = table.Column<int>(type: "INTEGER", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SetUserContacts", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SetServiceClients",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    UserContactsId = table.Column<int>(type: "INTEGER", nullable: false),
                     RequestId = table.Column<Guid>(type: "TEXT", nullable: false),
                     AreaHouseSquarMeters = table.Column<int>(type: "INTEGER", nullable: false),
                     Walls = table.Column<int>(type: "INTEGER", nullable: false),
@@ -68,13 +66,21 @@ namespace HauseCalcApi.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SetServiceClients", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SetServiceClients_SetUserContacts_UserContactsId",
-                        column: x => x.UserContactsId,
-                        principalTable: "SetUserContacts",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    table.PrimaryKey("PK_UserCalculationRequests", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserContacts",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    NameUser = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneUser = table.Column<string>(type: "TEXT", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserContacts", x => x.Id);
                 });
 
             migrationBuilder.InsertData(
@@ -95,24 +101,22 @@ namespace HauseCalcApi.Migrations
                     { 11, "windows", 15500 },
                     { 12, "door", 65000 }
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_SetServiceClients_UserContactsId",
-                table: "SetServiceClients",
-                column: "UserContactsId");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "ClientRequestIds");
+
+            migrationBuilder.DropTable(
                 name: "Prices");
 
             migrationBuilder.DropTable(
-                name: "SetServiceClients");
+                name: "UserCalculationRequests");
 
             migrationBuilder.DropTable(
-                name: "SetUserContacts");
+                name: "UserContacts");
         }
     }
 }

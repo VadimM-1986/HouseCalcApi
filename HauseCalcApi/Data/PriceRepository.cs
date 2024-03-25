@@ -62,7 +62,7 @@ namespace HauseCalcApi.Data
                 }
         };
 
-            await _context.SetServiceClients.AddRangeAsync(setServiceClients);
+            await _context.UserCalculationRequests.AddRangeAsync(setServiceClients);
             await _context.SaveChangesAsync();
         }
 
@@ -70,82 +70,71 @@ namespace HauseCalcApi.Data
         // Get a calculation
         public async Task<UserCalculationRequest> GetCalculationCost(Guid requestId)
         {
-            UserCalculationRequest? calculationCost = await _context.SetServiceClients.SingleOrDefaultAsync(el => el.RequestId == requestId);
+            UserCalculationRequest? calculationCost = await _context.UserCalculationRequests.SingleOrDefaultAsync(el => el.RequestId == requestId);
             return calculationCost;
         }
 
 
-        // Get Guid User for Admin
-        public async Task<List<UserCalculationRequest>> GetCalculationRequestUser(List<string> guids)
+        // Get Guid User for Admin ---
+        public async Task<List<UserCalculationRequest>> GetCalculationRequestUser(int userContactId)
         {
-            List<UserCalculationRequest> userCalculationRequestsOut = new List<UserCalculationRequest>();
+            var query = from userCalculationRequest in _context.UserCalculationRequests
+                        join ClientRequestId in _context.ClientRequestIds
+                        on userCalculationRequest.RequestId equals ClientRequestId.RequestID
+                        where ClientRequestId.ContactID == userContactId
+                        select userCalculationRequest;
 
-            var query = from userCalculation in _context.SetServiceClients
-                        join settlementId in _context.SetSettlementIDs
-                        on userCalculation.RequestId equals settlementId.RequestID
-                        select userCalculation;
-
-            foreach (var guid in guids)
-            {
-                if (Guid.TryParse(guid, out Guid resultGuid))
-                {
-                    // Преобразование строки в GUID удалось, используем resultGuid
-                    UserCalculationRequest? userCalculationRequest = await query.FirstOrDefaultAsync(x => x.RequestId == resultGuid);
-                    if (userCalculationRequest != null)
-                    {
-                        userCalculationRequestsOut.Add(userCalculationRequest);
-                    }
-                }
-            }
-
-            return userCalculationRequestsOut;
+            return await query.ToListAsync();
         }
 
 
         // Add Database Contacts
-        public async Task<int?> FillDatabaseContactsAsync(UserContact contact)
+        public async Task<int?> FillDatabaseContactsAsync(UserContactDTO userContactDTO)
         {
             var userContacts = new List<UserContact>
             {
                 new UserContact
                 {
-                    NameUser = contact.NameUser,
-                    PhoneUser = contact.PhoneUser,
-                    UserRequestLists = contact.UserRequestLists
+                    NameUser = userContactDTO.NameUser,
+                    PhoneUser = userContactDTO.PhoneUser
                 },
             };
 
-            await _context.SetUserContacts.AddRangeAsync(userContacts);
+            await _context.UserContacts.AddRangeAsync(userContacts);
             await _context.SaveChangesAsync();
 
-            int? Id = userContacts.LastOrDefault()?.Id;
+            int userContactId = userContacts.LastOrDefault().Id;
+
+            AddUserRequestIds(userContactId, userContactDTO.UserRequestLists);
+
+            return userContactId;
+        }
 
 
-            // Add tsble SettlemmentIDs
-            var settlementIDs = new List<SettlementID>();
+        public async Task AddUserRequestIds(int userContactId, List<Guid> userRequestLists)
+        {
+            var ClientRequestIds = new List<ClientRequestId>();
 
-            foreach (var requestID in contact.UserRequestLists)
+            foreach (var requestId in userRequestLists)
             {
-                var settlementID = new SettlementID()
+                var ClientRequestId = new ClientRequestId()
                 {
-                    ContactID = (int)Id,
-                    RequestID = Guid.Parse(requestID)
+                    ContactID = userContactId,
+                    RequestID = requestId
                 };
 
-                settlementIDs.Add(settlementID);
+                ClientRequestIds.Add(ClientRequestId);
             }
 
-            await _context.SetSettlementIDs.AddRangeAsync(settlementIDs);
+            await _context.ClientRequestIds.AddRangeAsync(ClientRequestIds);
             await _context.SaveChangesAsync();
-
-            return Id;
         }
 
 
         // Get all orders
         public async Task<List<UserContact>> GetAllUserContacts()
         {
-            List<UserContact> userContacts = await _context.SetUserContacts.ToListAsync();
+            List<UserContact> userContacts = await _context.UserContacts.ToListAsync();
             return userContacts;
         }
 
@@ -153,8 +142,8 @@ namespace HauseCalcApi.Data
         // Get user
         public async Task<UserContact> GetUser(int userId)
         {
-            UserContact? userContacts = await _context.SetUserContacts.SingleOrDefaultAsync(el => el.Id == userId);
-            return userContacts;
+            UserContact? userContact = await _context.UserContacts.SingleOrDefaultAsync(el => el.Id == userId);
+            return userContact;
         }
     }
 }

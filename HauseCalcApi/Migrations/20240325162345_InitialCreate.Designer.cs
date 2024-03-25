@@ -12,7 +12,7 @@ using AppContext = HauseCalcApi.Models.AppContext;
 namespace HauseCalcApi.Migrations
 {
     [DbContext(typeof(AppContext))]
-    [Migration("20240305184329_InitialCreate")]
+    [Migration("20240325162345_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,6 +20,23 @@ namespace HauseCalcApi.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
+
+            modelBuilder.Entity("HauseCalcApi.Models.ClientRequestId", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ContactID")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("RequestID")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ClientRequestIds");
+                });
 
             modelBuilder.Entity("HauseCalcApi.Models.Price", b =>
                 {
@@ -163,20 +180,15 @@ namespace HauseCalcApi.Migrations
                     b.Property<int>("Seams")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("UserContactsId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int>("Walls")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("UserContactsId");
-
-                    b.ToTable("SetServiceClients");
+                    b.ToTable("UserCalculationRequests");
                 });
 
-            modelBuilder.Entity("HauseCalcApi.Models.UserContacts", b =>
+            modelBuilder.Entity("HauseCalcApi.Models.UserContact", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -185,32 +197,12 @@ namespace HauseCalcApi.Migrations
                     b.Property<string>("NameUser")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PhoneUser")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserRequestLists")
-                        .IsRequired()
+                    b.Property<string>("PhoneUser")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.ToTable("SetUserContacts");
-                });
-
-            modelBuilder.Entity("HauseCalcApi.Models.UserCalculationRequest", b =>
-                {
-                    b.HasOne("HauseCalcApi.Models.UserContacts", "UserContacts")
-                        .WithMany("UserRequests")
-                        .HasForeignKey("UserContactsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("UserContacts");
-                });
-
-            modelBuilder.Entity("HauseCalcApi.Models.UserContacts", b =>
-                {
-                    b.Navigation("UserRequests");
+                    b.ToTable("UserContacts");
                 });
 #pragma warning restore 612, 618
         }

@@ -9,6 +9,5 @@ namespace HauseCalcApi.Models
         public int Id { get; set; }
         public string? NameUser { get; set; }
         public string? PhoneUser { get; set; }
-        public List<string> UserRequestLists { get; set; } = new();
     }
 }

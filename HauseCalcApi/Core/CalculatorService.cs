@@ -1,5 +1,6 @@
 ﻿using HauseCalcApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Core.Types;
 using System;
 
 namespace HauseCalcApi.Core
@@ -128,46 +129,37 @@ namespace HauseCalcApi.Core
 
 
         // User Contacts Add
-        public async Task<int?> UserContactsAdd(UserContact userContacts)
+        public async Task<int?> UserContactsAdd(UserContactDTO userContactDTO)
         {
-            UserContact userContact = new UserContact();
+            int? userContactId = await _priceRepository.FillDatabaseContactsAsync(userContactDTO);
 
-                userContact.NameUser = userContacts.NameUser;
-                userContact.PhoneUser = userContacts.PhoneUser;
-                userContact.UserRequestLists = userContacts.UserRequestLists;
-
-            int? Id = await _priceRepository.FillDatabaseContactsAsync(userContact);
-            return Id;
+            return userContactId;
         }
 
 
         // Get All Orders
         public async Task <List<UserContact>> GetAllOrders()
         {
-            List<UserContact> userContacts = await _priceRepository.GetAllUserContacts();
-            return userContacts;
+            List<UserContact> userContact = await _priceRepository.GetAllUserContacts();
+            return userContact;
         }
 
 
         // Get User Contact for Admin
         public async Task<UserOrder> GetOrder(int userId)
         {
-            UserContact userContacts = await _priceRepository.GetUser(userId);
-            List<string> guids = userContacts.UserRequestLists;
+           UserContact userContact = await _priceRepository.GetUser(userId);
 
-
-           List<UserCalculationRequest> userCalculationRequests = await _priceRepository.GetCalculationRequestUser(guids);
+           List<UserCalculationRequest> userCalculationRequest = await _priceRepository.GetCalculationRequestUser(userId);
 
             var result = new UserOrder
             {
-                UserContact = userContacts,
-                UserCalculationRequests = userCalculationRequests
+                UserContact = userContact,
+                UserCalculationRequests = userCalculationRequest
             };
 
             return result;
         }
-
-
 
     }
 }

@@ -2,7 +2,7 @@
 
 namespace HauseCalcApi.Models
 {
-    public class SettlementID
+    public class ClientRequestId
     {
         [Key]
         public int Id { get; set; }

@@ -2,10 +2,10 @@
 
 namespace HauseCalcApi.Models
 {
-    public class UserContactsDTO
+    public class UserContactDTO
     {
         public string? NameUser { get; set; }
         public string? PhoneUser { get; set; }
-        public List<string> UserRequestLists { get; set; } = new();
+        public List<Guid> UserRequestLists { get; set; } = new();
     }
 }

@@ -6,10 +6,10 @@ namespace HauseCalcApi.Models
     {
         private readonly string _dataSource;
         public DbSet<Price> Prices { get; set; }
-        public DbSet<UserCalculationRequest> SetServiceClients { get; set; }
-        public DbSet<UserContact> SetUserContacts { get; set; }
+        public DbSet<UserCalculationRequest> UserCalculationRequests { get; set; }
+        public DbSet<UserContact> UserContacts { get; set; }
 
-        public DbSet<SettlementID> SetSettlementIDs {  get; set; }
+        public DbSet<ClientRequestId> ClientRequestIds {  get; set; }
 
         public AppContext(string dataSource = "Data Source=helloapp.db")
         {
