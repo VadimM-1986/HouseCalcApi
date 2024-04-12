@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using HauseCalcApi.Models;
 using HauseCalcApi.Core;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HauseCalcApi.Controllers
 {
@@ -16,10 +9,12 @@ namespace HauseCalcApi.Controllers
     public class CalculatorController : ControllerBase
     {
         private readonly ICalculatorService _calculatorService;
+        private readonly ILogger<CalculatorController> _logger;
 
-        public CalculatorController(ICalculatorService calculatorService)
+        public CalculatorController(ICalculatorService calculatorService, ILogger<CalculatorController> logger)
         {
             _calculatorService = calculatorService;
+            _logger = logger;
         }
 
 
@@ -29,7 +24,7 @@ namespace HauseCalcApi.Controllers
             var error = ValidateAreaHouseSquarMetersRequest(costService);
             if (error != null)
             {
-                Console.WriteLine(error);
+                _logger.LogWarning($"The field of AreaHouseSquarMeters has not been found {error}");
                 return BadRequest(error);
             }
 
@@ -50,7 +45,7 @@ namespace HauseCalcApi.Controllers
         {
             if (costService.AreaHouseSquarMeters == 0)
             {
-                return "Not all data is filled in";
+                return "You didn't fill in the AreaHouseSquarMeters field";
             }
 
             return null;

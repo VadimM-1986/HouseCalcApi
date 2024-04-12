@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using HauseCalcApi.Core;
 using HauseCalcApi.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -45,17 +43,8 @@ namespace HauseCalcApi.Controllers
         [HttpGet("userOrders/{userId}")]
         public async Task<IActionResult> GetUserOrders(int userId)
         {
-            try
-            {
                 UserOrder userOrder = await _calculatorService.GetOrder(userId);
                 return Ok(userOrder);
-            }
-            catch (UserNotFoundException _)
-            {
-                return NotFound("User not found");
-                throw new UserNotFoundException();
-                _logger.LogWarning($"User not found {userId}");
-            }
         }
 
     }

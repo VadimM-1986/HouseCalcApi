@@ -1,7 +1,4 @@
 ﻿using HauseCalcApi.Models;
-using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol.Core.Types;
-using System;
 
 namespace HauseCalcApi.Core
 {
@@ -160,6 +157,5 @@ namespace HauseCalcApi.Core
 
             return result;
         }
-
     }
 }

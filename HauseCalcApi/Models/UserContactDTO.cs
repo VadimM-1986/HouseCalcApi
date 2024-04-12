@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace HauseCalcApi.Models
+﻿namespace HauseCalcApi.Models
 {
     public class UserContactDTO
     {

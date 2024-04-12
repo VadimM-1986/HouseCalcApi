@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using HauseCalcApi.Models;
-
-namespace HauseCalcApi.Models
+﻿namespace HauseCalcApi.Models
 {
     public class UserOrder
     {

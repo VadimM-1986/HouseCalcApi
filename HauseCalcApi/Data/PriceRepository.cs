@@ -1,8 +1,6 @@
 ﻿using HauseCalcApi.Core;
 using HauseCalcApi.Models;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace HauseCalcApi.Data
 {
     public class PriceRepository : IPriceRepository
@@ -75,7 +73,7 @@ namespace HauseCalcApi.Data
         }
 
 
-        // Get Guid User for Admin ---
+        // Get Guid User for Admin
         public async Task<List<UserCalculationRequest>> GetCalculationRequestUser(int userContactId)
         {
             var query = from userCalculationRequest in _context.UserCalculationRequests

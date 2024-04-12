@@ -1,16 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using HauseCalcApi.Models;
 using HauseCalcApi.Core;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using Microsoft.AspNetCore.Http.HttpResults;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using NuGet.Protocol.Core.Types;
 
 namespace HauseCalcApi.Controllers
 {
@@ -19,10 +9,12 @@ namespace HauseCalcApi.Controllers
     public class UserController : ControllerBase
     {
         private readonly ICalculatorService _calculatorService;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(ICalculatorService calculatorService)
+        public UserController(ICalculatorService calculatorService, ILogger<UserController> logger)
         {
             _calculatorService = calculatorService;
+            _logger = logger;
         }
 
 
@@ -32,7 +24,7 @@ namespace HauseCalcApi.Controllers
             var error = ValidateUserRequest(userContactDTO);
             if (error != null)
             {
-                Console.WriteLine(error);
+                _logger.LogWarning(error);
                 return BadRequest(error);
             }
 
@@ -44,11 +36,25 @@ namespace HauseCalcApi.Controllers
 
         private string? ValidateUserRequest(UserContactDTO dto)
         {
-            if (dto == null)
-            {
-                return "Not all data is filled in";
-            }
+            string errorAnswerMessage = "You haven't filled out these fields: ";
 
+            if (dto != null)
+            {          
+                if(dto.NameUser == "")
+                {
+                    errorAnswerMessage += "User name. ";
+                }
+                else if(dto.PhoneUser == "")
+                {
+                    errorAnswerMessage += "User phone. ";
+                }
+                else if (dto.UserRequestLists == null)
+                {
+                    errorAnswerMessage += "User request lists.";
+                    
+                }
+                return errorAnswerMessage;
+            }
             return null;
         }
     }

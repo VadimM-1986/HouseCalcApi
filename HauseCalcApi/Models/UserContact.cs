@@ -1,5 +1,4 @@
-﻿using Swashbuckle.AspNetCore.SwaggerGen;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace HauseCalcApi.Models
 {

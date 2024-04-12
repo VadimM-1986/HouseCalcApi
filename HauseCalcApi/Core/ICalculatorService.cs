@@ -1,8 +1,4 @@
-﻿using HauseCalcApi.Data;
-using HauseCalcApi.Models;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis;
-using System.Threading.Tasks;
+﻿using HauseCalcApi.Models;
 
 namespace HauseCalcApi.Core
 {
