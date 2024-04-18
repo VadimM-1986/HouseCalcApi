@@ -40,19 +40,22 @@ namespace HauseCalcApi.Controllers
 
             if (dto != null)
             {          
-                if(dto.NameUser == "")
+                if(String.IsNullOrEmpty(dto.NameUser))
                 {
                     errorAnswerMessage += "User name. ";
                 }
-                else if(dto.PhoneUser == "")
+
+                else if(String.IsNullOrEmpty(dto.PhoneUser))
                 {
                     errorAnswerMessage += "User phone. ";
                 }
+
                 else if (dto.UserRequestLists == null)
                 {
                     errorAnswerMessage += "User request lists.";
                     
                 }
+
                 return errorAnswerMessage;
             }
             return null;

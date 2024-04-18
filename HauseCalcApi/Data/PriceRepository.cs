@@ -111,20 +111,20 @@ namespace HauseCalcApi.Data
 
         public async Task AddUserRequestIds(int userContactId, List<Guid> userRequestLists)
         {
-            var ClientRequestIds = new List<ClientRequestId>();
+            var clientRequestIds = new List<ClientRequestId>();
 
             foreach (var requestId in userRequestLists)
             {
-                var ClientRequestId = new ClientRequestId()
+                var clientRequestId = new ClientRequestId()
                 {
                     ContactID = userContactId,
                     RequestID = requestId
                 };
 
-                ClientRequestIds.Add(ClientRequestId);
+                clientRequestIds.Add(clientRequestId);
             }
 
-            await _context.ClientRequestIds.AddRangeAsync(ClientRequestIds);
+            await _context.ClientRequestIds.AddRangeAsync(clientRequestIds);
             await _context.SaveChangesAsync();
         }
 
