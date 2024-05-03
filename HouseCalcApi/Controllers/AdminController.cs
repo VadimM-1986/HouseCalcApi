@@ -46,7 +46,6 @@ namespace HouseCalcApi.Controllers
                 UserOrder userOrder = await _calculatorService.GetOrder(userId);
                 return Ok(userOrder);
         }
-
     }
 }
 
